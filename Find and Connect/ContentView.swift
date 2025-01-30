@@ -126,16 +126,30 @@ struct ContentView: View {
                                 .foregroundColor(.white)
                                 .padding()
                             
-                            // Display received data
-                            ForEach(Array(bluetoothManager.receivedData.keys), id: \.self) { key in
-                                HStack {
-                                    Text(key)
-                                        .font(.system(size: 16, weight: .regular, design: .rounded))
-                                        .foregroundColor(.white)
-                                    Spacer()
-                                    Text("\(bluetoothManager.receivedData[key] as? String ?? "")")
-                                        .font(.system(size: 16, weight: .medium, design: .rounded))
-                                        .foregroundColor(.white)
+                            // Add a count of received data entries
+                            Text("Received Data Count: \(bluetoothManager.receivedData.count)")
+                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                .foregroundColor(.white)
+                            
+                            // Display received data with more detail
+                            ScrollView {
+                                VStack(spacing: 10) {
+                                    ForEach(Array(bluetoothManager.receivedData.keys), id: \.self) { key in
+                                        VStack(alignment: .leading, spacing: 5) {
+                                            Text("Key: \(key)")
+                                                .font(.system(size: 16, weight: .regular, design: .rounded))
+                                                .foregroundColor(.white)
+                                            
+                                            if let value = bluetoothManager.receivedData[key] {
+                                                Text("Value: \(String(describing: value))")
+                                                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                                                    .foregroundColor(.white.opacity(0.9))
+                                            }
+                                        }
+                                        .padding()
+                                        .background(Color.black.opacity(0.2))
+                                        .cornerRadius(8)
+                                    }
                                 }
                                 .padding(.horizontal)
                             }
